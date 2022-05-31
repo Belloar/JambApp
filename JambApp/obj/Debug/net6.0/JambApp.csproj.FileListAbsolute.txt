@@ -1,0 +1,15 @@
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\bin\Debug\net6.0\JambApp.exe
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\bin\Debug\net6.0\JambApp.deps.json
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\bin\Debug\net6.0\JambApp.runtimeconfig.json
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\bin\Debug\net6.0\JambApp.dll
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\bin\Debug\net6.0\JambApp.pdb
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.csproj.AssemblyReference.cache
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.AssemblyInfoInputs.cache
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.AssemblyInfo.cs
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.csproj.CoreCompileInputs.cache
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.dll
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\refint\JambApp.dll
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.pdb
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\JambApp.genruntimeconfig.cache
+C:\Users\ABD'RAHMAN BELLO\source\repos\JambApp\JambApp\obj\Debug\net6.0\ref\JambApp.dll
