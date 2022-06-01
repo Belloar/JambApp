@@ -83,7 +83,7 @@ namespace JambApp.Managers
                 }
             }
         }
-        public Centre GenerateExamCentre(string studentState)
+        public  Centre GenerateExamCentre(string studentState)
         {
             
             foreach(var centre in centres)

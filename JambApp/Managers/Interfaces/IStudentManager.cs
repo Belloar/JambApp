@@ -5,7 +5,7 @@ using JambApp.Models;
 
 namespace JambApp.Managers.Interfaces
 {
-    internal interface IStudentManager
+    public interface IStudentManager
     {
         public void Register();
         public string JambNoGenerator();
