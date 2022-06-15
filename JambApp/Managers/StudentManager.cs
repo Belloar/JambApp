@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,38 +15,38 @@ namespace JambApp.Managers
         int NoOfStudents = 0;
         ICentreManager centreManager = new CentreManager();
         SubjectManager subjectManager = new();
-        InstitutionsManager institutionsManager = new();
+        //InstitutionsManager institutionsManager = new();
 
 
         public List<Student> students;
         public const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-        public StudentManager()
+       /* public StudentManager()
         {
-           /* students = new()
+            students = new()
             {
                 new Student(1,"warri","man","warriman@gmail.com","0000",Gender.Male,"warriLand","00000",Role.Student,"0000aa",CentreManager.centres[2],DateTime.Now,0,"ogun","")
-            }*/
-        }
+            }
+        }*/
         public void RegisterStudent()
         {
+
             NoOfStudents++;
+            Console.Write("Input your email address : ");
+            string email = Console.ReadLine();
+            
+            foreach(var astudent in students )
+            {
+                if(astudent.Email == email)
+                {
+                    Console.WriteLine("a Student with this email has already been added");
+                }
+            }
             Console.Write("input your first name : ");
             string firstName = Console.ReadLine();
 
             Console.Write("Input your last name : ");
             string lastName = Console.ReadLine();
-
-            Console.Write("Input your email address : ");
-            string email = Console.ReadLine();
-            
-            foreach(var aStudent in students )
-            {
-                if(aStudent.Email == email)
-                {
-                    Console.WriteLine("a Student with this email has already been added");
-                }
-            }
             Console.Write("Input a password : ");
             string password = Console.ReadLine();
 
@@ -68,15 +69,13 @@ namespace JambApp.Managers
             Console.Write("Input your home address : ");
             string address = Console.ReadLine();
 
-            Console.Write("In what state : ");
+            Console.Write("Input your state of residence : ");
             string studentState = Console.ReadLine();
 
             Console.Write("Input your NIN : ");
             string nin = Console.ReadLine();
-            
 
             Role role = Role.Student;
-
             string jambNumber = JambNumberGenerator();
             Centre examCentre = centreManager.GenerateExamCentre(studentState);
 
@@ -117,7 +116,7 @@ namespace JambApp.Managers
         {
             foreach(var student in students)
             {
-                Console.WriteLine($"{student.LastName}{student.FirstName}\n {student.Email}\n{student.Password}\n\t{student.Gender}\n\t{student.Address}\n\t{student.Nin}\n{student.Role}\n{student.JambNumber}\n{student.ExamCentre}\n{student.Date}\n{student.ExamScore}\n{student.StudentState}\n{student.StudentSubjects}\n{student.StudentInstitutions}");
+               Print(student);
             }
         }
         public void GetStudentByJnum(string jambNumber)

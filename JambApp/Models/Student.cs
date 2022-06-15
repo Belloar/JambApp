@@ -20,7 +20,7 @@ namespace JambApp.Models
         public List<Institutions> StudentInstitutions { get; set; } = new List<Institutions>();
        
         
-         
+        
         public Student(int id, string firstName, string lastName, string email, string password, Gender gender, string address, string nin, Role role, string jambNumber, Centre examCentre , DateTime date, int examScore, string studentState, Dictionary<string, Dictionary<string, string>> studentSubjects,List<Institutions>studentInstitutions) : base
             (id, firstName, lastName, email, password, gender, address, nin, role)
         {
@@ -33,6 +33,7 @@ namespace JambApp.Models
             StudentInstitutions = studentInstitutions;
             
         }
+       
         
 
 

@@ -8,7 +8,7 @@ namespace JambApp.Menus
 {
     internal class MainMenu
     {
-
+        
         StaffMenu staffMenu = new StaffMenu();
         StudentMenu StudentMenu = new StudentMenu();
 

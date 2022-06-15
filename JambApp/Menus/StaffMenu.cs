@@ -7,6 +7,7 @@ using JambApp.Managers;
 using JambApp.Models;
 using JambApp.enums;
 using JambApp.Managers.Interfaces;
+using JambApp.Repositories;
 
 
 namespace JambApp.Menus
@@ -16,8 +17,9 @@ namespace JambApp.Menus
         ICentreManager centreManager = new CentreManager();
         StaffManager staffManager = new();
         ICourseManager courseManager = new CourseManager();
-        IStudentManager studentManager = new StudentManager();
+        //IStudentManager studentManager = new StudentManager();
         IInstitutionsManager institutionsManager = new InstitutionsManager();
+        InstitutionRepository instituteRepo = new InstitutionRepository();
         
         public void Menu()
         {
@@ -72,11 +74,13 @@ namespace JambApp.Menus
         private void PrintOtherMenu()
         {
 
-            Console.WriteLine("1.Add new centre");
+            Console.WriteLine("1.\tAdd new centre");
             Console.WriteLine("2.\tAdd new course.");
             Console.WriteLine("3.\tAdd new staff.");
             Console.WriteLine("4.\tremove a course.");
-            Console.WriteLine("9.\tshow Student details");
+            Console.WriteLine("5.\tshow Student details");
+            Console.WriteLine("6.\tAdd new institution");
+            Console.WriteLine("7.\t");
             Console.WriteLine("0.\tLogout.");
         }
 
@@ -94,26 +98,41 @@ namespace JambApp.Menus
                     switch (op)
                     {
                         case 1:
-                        centreManager.Register();
-                        HookScreen();
+                            centreManager.Register();
+                            HookScreen();
                         break;
 
                         case 2:
-                        courseManager.RegisterCourse();
-                        HookScreen();
+                            courseManager.RegisterCourse();
+                            HookScreen();
                         break;
 
                         case 3:
-                        staffManager.AddNewStaff(staff);
-                        HookScreen();
+                            staffManager.AddNewStaff(staff);
+                            HookScreen();
                         break;
 
                         case 4:
-                        Console.Write("Input your jambNumber : ");
-                        string jambNumber = Console.ReadLine();
-                        studentManager.PrintBiodata(jambNumber);
-                        HookScreen();
+                            Console.Write("Input student jambNumber: ");
+                            string jambNumber = Console.ReadLine();
+                            studentManager.PrintBiodata(jambNumber);
+                            HookScreen();
                         break;
+                        case 6:
+                            var institution = new Institutions();
+                            var address = new Address();
+                            Console.Write("Input the institution name: ");
+                            institution.InstitutionName = Console.ReadLine();
+                            Console.Write("Input the institution city: ");
+                            address.City = Console.ReadLine();
+                            Console.Write("Input the institution state: ");
+                            address.State = Console.ReadLine();
+                            institutionsManager.AddInstitution(institution, address);
+                            HookScreen();
+                            break;
+
+
+
                         case 0:
                         exit = true;                        
                         break;

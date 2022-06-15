@@ -7,25 +7,10 @@ using JambApp.Managers.Interfaces;
 namespace JambApp.Managers
 {
     public class CentreManager : ICentreManager
-    {
-        
+    {       
         public static int numberOfCentres = 6;
         public static List<Centre> centres;
         
-        
-
-        public CentreManager()
-        {
-            centres = new()
-            {
-                new Centre(1,"zaFirstCentre",100,1680,"warri","rivers","5955",0),
-                new Centre(2,"zaSecondCentre",80,1680,"ilorin","kwara","5955",0),
-                new Centre(3,"zaThirdCentre",150,3150,"abeokuta","ogun","5955",0),
-                new Centre(4,"zaFourthCentre",50,1050,"lagos MainLand","Lagos","5955",0),
-                new Centre(5,"zaFifthCentre",10,210,"lagos island","Lagos","5955",0),
-                new Centre(6,"zaFourthCentre",50,1050,"ikorodu","Lagos","5955",0)
-            };
-        }
         public  void Register()
         {
             numberOfCentres++;
