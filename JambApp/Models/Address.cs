@@ -23,16 +23,28 @@ namespace JambApp.Models
             Country = country;
             Town = town;
         }
-        public Address()
+        public Address(string town, string city, string state,string country)
         {
-
+            Town = town;
+            City = city;
+            State = state;
+            Country = country;
         }
-        public Address(string city, string state)
+        public Address(string town ,string city, string state)
         {
+            Town = town;   
             City = city;
             State = state;
             
             
+        }
+        public Address(string homeAddress, string town, string city, string state, string country)
+        {
+            HomeAddress = homeAddress;
+            City = city;
+            State = state;
+            Country = country;
+            Town = town;
         }
     }
 }

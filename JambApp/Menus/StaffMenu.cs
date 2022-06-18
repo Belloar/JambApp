@@ -17,7 +17,7 @@ namespace JambApp.Menus
         ICentreManager centreManager = new CentreManager();
         StaffManager staffManager = new();
         ICourseManager courseManager = new CourseManager();
-        //IStudentManager studentManager = new StudentManager();
+        StudentManager studentManager = new StudentManager();
         IInstitutionsManager institutionsManager = new InstitutionsManager();
         InstitutionRepository instituteRepo = new InstitutionRepository();
         
@@ -38,8 +38,8 @@ namespace JambApp.Menus
                             var staff = staffManager.Login();
                             if (staff == null)
                             {
-                                Console.Write("Invalid email or password...\nPress enter key to try again.");
-                                Console.ReadKey();
+                                Console.Write("Invalid email or password...");
+                                HookScreen();
                             }
                             else
                             {
@@ -120,14 +120,12 @@ namespace JambApp.Menus
                         break;
                         case 6:
                             var institution = new Institutions();
-                            var address = new Address();
+                            
                             Console.Write("Input the institution name: ");
                             institution.InstitutionName = Console.ReadLine();
-                            Console.Write("Input the institution city: ");
-                            address.City = Console.ReadLine();
-                            Console.Write("Input the institution state: ");
-                            address.State = Console.ReadLine();
-                            institutionsManager.AddInstitution(institution, address);
+                            Console.Write("Input the institution's town,city,state");
+                            institution.InstitutionAddress = Console.ReadLine();
+                            institutionsManager.AddInstitution(institution);
                             HookScreen();
                             break;
 

@@ -15,11 +15,11 @@ public abstract class Person
     public string Email { get; set; }
     public string Password { get; set; }
     public Gender Gender { get; set; }
-    public string Address { get; set; }
+    public Address Address { get; set; }
     public string Nin { get; set; }
     public Role Role { get; set; }
 
-    public Person(int id, string firstName, string lastName, string email, string password , Gender gender, string address, string nin, Role role)
+    public Person(int id, string firstName, string lastName, string email, string password , Gender gender, Address address, string nin, Role role)
     {
         Id = id;
         FirstName = firstName;
@@ -30,6 +30,18 @@ public abstract class Person
         Address = address;
         Nin = nin;
         Role = role;
+    }
+    public Person(string firstName, string lastName, string email, Gender gender, Address address, string nin)
+    {
+        
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        
+        Gender = gender;
+        Address = address;
+        Nin = nin;
+        
     }
 
 }

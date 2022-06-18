@@ -9,7 +9,7 @@ namespace JambApp.Managers.Interfaces
     public interface ICentreManager
     {
         public void Register();
-        public void GetCentreByState(string centreState);
+        public List<Centre> GetCentreByState(string centreState);
         public void GetAllCentre();
         public Centre GenerateExamCentre(string studentState);
 

@@ -9,12 +9,12 @@ namespace JambApp.Models;
 
 public class Staff:Person 
 {
-    public int AccountNumber { get; set; }
+    public string AccountNumber { get; set; }
     public string StaffNumber { get; set; }
     public StaffStatus  Status { get; set; }
     
     
-    public Staff(int id, string firstName, string lastName, string email, string password, Gender gender, string address, string nin, Role role, string staffNumber, StaffStatus status, int accountNumber) :
+    public Staff(int id, string firstName, string lastName, string email, string password, Gender gender, Address address, string nin, Role role, string staffNumber, StaffStatus status, string accountNumber) :
         base(id, firstName, lastName, email, password, gender, address, nin, role)
     {
         StaffNumber = staffNumber;
@@ -22,5 +22,6 @@ public class Staff:Person
         AccountNumber = accountNumber;
 
     }
+
 
 }

@@ -10,7 +10,7 @@ using JambApp.Managers.Interfaces;
 
 namespace JambApp.Managers
 {
-    public class InstitutionsManager : IInstitutionsManager, IAddressManager
+    public class InstitutionsManager : IInstitutionsManager
     {
         public int NoOfInstitutions = 3;
         public static Dictionary<int, Institutions> institutions = new();
@@ -23,36 +23,8 @@ namespace JambApp.Managers
         {
             Console.WriteLine($"{NoOfInstitutions}, {institution.InstitutionName}, {institution.InstitutionAddress}");
         }
-        public void AddNewInstitution()
-        {
-            NoOfInstitutions++;
-
-            Console.Write("input the Institution name : ");
-            string institutionName = Console.ReadLine();
-
-            Console.Write("Input the institution address : ");
-            Address institutionAddress;
-
-            Console.Write("What state is this institution located : ");
-            string institutionState = Console.ReadLine();
-
-            Console.Write("What city is thid institution located");
-            string institutionCity = Console.ReadLine();
-
-            var institution = new Institutions(NoOfInstitutions, institutionName, institutionAddress);
-            institutions.Add(NoOfInstitutions, institution);
-
-        }
-        public void StoreInstitution(int key)
-        {
-            foreach (var institution in institutions)
-            {
-                if (institution.Key == key)
-                {
-                    pickedInstitutions.Add(institution.Value);
-                }
-            }
-        }
+        
+        
 
         public void DisplayInstitution()
         {
@@ -105,8 +77,8 @@ namespace JambApp.Managers
                 {
                     Console.WriteLine($"InstitutionName: {reader["institutionName"]} \n {reader["address.town"]}\n {reader["address.city"]}");
                 }
-                var result = commandString.ExecuteNonQuery();
-                Console.WriteLine("{0} number of rows was affected", result);
+                
+                
             }
             catch (Exception ex)
             {
@@ -147,16 +119,15 @@ namespace JambApp.Managers
             }
 
         }
-        public void AddInstitution(Institutions institution, Address address)
+        public void AddInstitution(Institutions institution)
         {
-            string commandString1 = $"insert into institutions(institutionName,)values('{institution.InstitutionName}'),";
-            string commandString2 = $"insert into address(city,state) values('{address.City}','{address.State}')";
+            string commandString1 = $"insert into institutions(institutionName,institutuionAddress)values('{institution.InstitutionName}','{institution.InstitutionAddress}'),";
+            
 
             try
             {
                 connection.Open();
                 MySqlCommand command1 = new MySqlCommand(commandString1, connection);
-                var reader = command1.ExecuteReader();
                 var result = command1.ExecuteNonQuery();
                 Console.WriteLine("{0} number of row(s) affected in institutions", result);
             }
@@ -168,22 +139,7 @@ namespace JambApp.Managers
             {
                 connection.Close();
             }
-            try
-            {
-                connection.Open();
-                MySqlCommand command2 = new MySqlCommand(commandString2, connection);
-                var reader2 = command2.ExecuteReader();
-                var result2 = command2.ExecuteNonQuery();
-                Console.WriteLine("{0} number of row(s) affected in address", result2);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-            finally
-            {
-                connection.Close();
-            }
+            
 
         }
 

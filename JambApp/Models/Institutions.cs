@@ -11,12 +11,12 @@ namespace JambApp.Models
     {
         public int Id { get; set; }
         public string InstitutionName { get; set; }
-        public Address InstitutionAddress { get; set; }
+        public string InstitutionAddress { get; set; }
         
         public Course CourseToOffer { get; set; }
 
         
-        public Institutions(int id, string institutionName, Address institutionAddress)
+        public Institutions(int id, string institutionName, string institutionAddress)
         {
             Id = id;
             InstitutionName = institutionName;
@@ -28,7 +28,7 @@ namespace JambApp.Models
         {
 
         }
-        public Institutions(int id, string institutionName, Address institutionAddress, Course courseToOffer)
+        public Institutions(int id, string institutionName, string institutionAddress, Course courseToOffer)
         {
             Id = id;
             InstitutionName = institutionName;

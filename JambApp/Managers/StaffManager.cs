@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,28 +12,10 @@ namespace JambApp.Managers
 {
     public class StaffManager : IStaffManager
     {
-        ICourseManager courseManager = new CourseManager();
-        IStudentManager studentManager = new StudentManager();
-        ICentreManager centreManager = new CentreManager();
-
-        int NoOfStaffs = 8;
         public static List<Staff> staffs;
 
+        MySqlConnection connection = new MySqlConnection("Server=localhost;Database=JambAppDatabase;Uid=root;Pwd=@belloAR2001;");
 
-        public StaffManager()
-        {
-            staffs = new()
-            {
-                new Staff(1,"Brother","Muftau","Murphy@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.invigilator,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(2,"alfa","Mahmud","mahmud@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.inspector,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(3,"alfa","Qayum","qayum@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.invigilator,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(4,"Alfa","Awwal","awwal@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.inspector,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(5,"H.O.C","Shefik","shefik@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.invigilator,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(6,"alfa","waris","waris@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.Staff,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(7,"SenDev","Taofeek","tao@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.admin,StaffNoGenerator(), StaffStatus.Standby,00000000000),
-                new Staff(8,"Mr","Yusuf","mr_yusuf@Gmail.com","0000",Gender.Male,"abeokuta","5955",Role.admin,StaffNoGenerator(), StaffStatus.Standby,00000000000)
-            };
-        }
         public void AddNewStaff(Staff staff)
         {
             if (staff.Role != Role.admin)
@@ -43,16 +26,43 @@ namespace JambApp.Managers
             {
                 Console.Write("Enter your first name: ");
                 string firstName = Console.ReadLine();
+
                 Console.Write("Enter your last name: ");
                 string lastName = Console.ReadLine();
+
                 Console.Write("Enter your email: ");
                 string email = Console.ReadLine();
+
                 Console.Write("Enter your password: ");
                 string password = Console.ReadLine();
-                Console.Write("Enter your phone number: ");
-                string phone = Console.ReadLine();
-                Console.Write("Enter your address: ");
-                string address = Console.ReadLine();
+
+                Console.Write("Confirm password: ");
+                string password1 = Console.ReadLine();
+                while(password != password1)
+                {
+                    Console.Write("passwords do not match, try again: ");
+                    password1 = Console.ReadLine();
+
+
+                }
+
+               /* Console.Write("Enter your phone number: ");
+                string phone = Console.ReadLine();*/
+
+                Console.Write("Enter home address: ");
+                string homeAddress = Console.ReadLine();
+
+                Console.Write("Enter resident town");
+                string town = Console.ReadLine();
+
+                Console.Write("Enter resident city: ");
+                string city = Console.ReadLine();
+
+                Console.Write("Enter resident state: ");
+                string state = Console.ReadLine();
+
+               
+
                 Console.Write("Enter your gender\n1 for Male\n2 for Female\n3 for others: ");
                 int gender;
                 while (!int.TryParse(Console.ReadLine(), out gender) && (gender > 0 && gender < 4))
@@ -69,35 +79,100 @@ namespace JambApp.Managers
                 StaffStatus status = StaffStatus.Standby;
                 Role role = Role.Staff;
                 string staffNumber = StaffNoGenerator();
-                
-                NoOfStaffs++;
 
-                var newStaff = new Staff(NoOfStaffs, firstName, lastName, email, password, (Gender)gender, address, nin, (Role)role, staffNumber, status, accountNumber) ;
+                string commandString = $"insert into address(homeaddress, town , city , state) values('{homeAddress}','{town}','{city}','{state}');";
 
-                staffs.Add(newStaff);
-                Console.WriteLine($"You have successfully added a new staff with staff number {newStaff.StaffNumber}.");
+                string commandString1 = $"insert into staff(firstName,lastName,email,password,gender,nin,accountNumber,role,staffNumber,)";
+
+                try
+                {
+                    connection.Open();
+                    MySqlCommand command = new MySqlCommand(commandString, connection);
+                    var result = command.ExecuteNonQuery();
+                    Console.WriteLine("{0} rows affected",result);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+                try
+                {
+                    connection.Open();
+                    MySqlCommand command = new MySqlCommand(commandString1, connection);
+                    var result = command.ExecuteNonQuery();
+                    Console.WriteLine("{0} rows affected", result);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+
+
             }
         }
-        public string StaffNoGenerator()
+        private string StaffNoGenerator()
         {
             var random = new Random();
             return $"ST{random.Next(9999)}";
         }
         public Staff Login()
         {
+            Staff staff = null;
+            connection.Open();
             Console.Write("Enter your email: ");
             var email = Console.ReadLine();
             Console.Write("Enter your password: ");
             var password = Console.ReadLine();
 
-            foreach (var staff in staffs)
+
+            string commandString = $"select * from staff left join staffaddress on staff.id = staffid where email = '{email}' and password = '{password}';";
+            try
             {
-                if (staff.Email == email && staff.Password == password)
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    return staff;
+                    int id = (int)reader["id"];
+                    string firstName = (string)reader["firstName"];
+                    string lastName = (string)reader["lastName"];
+                    string eemail = (string)reader["email"];
+                    string staffNumber = (string)reader["Staffnumber"];
+                    string homeAddress = "wer";//(string)reader["homeaddress"];
+                    string town = (string)reader["town"];
+                    string nin = (string)reader["nin"];
+                    string city = (string)reader["city"];
+                    string state = (string)reader["state"];
+                    string country = (string)reader["nationality"];
+                    string accountNumber = (string)reader["accountNumber"];
+                    StaffStatus status = (StaffStatus)reader["staffstatus"];//(StaffStatus)Enum.Parse(typeof (StaffStatus),(string)reader["status"]);
+                    Gender gender = (Gender)reader["gender"];
+                    Role role = (Role)reader["role"];
+                    var address = new Address(homeAddress, town, city, state, country);
+                    staff = new Staff(id, firstName, lastName, eemail, password, gender, address, nin, role, staffNumber, status, accountNumber);
                 }
+                reader.Close();
+                return staff;
             }
-            return null;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return staff;
+            }
+            finally
+            {
+                connection.Close();
+            }
+            //return staff;
+
         }
     }
 }

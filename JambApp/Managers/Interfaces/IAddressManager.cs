@@ -10,7 +10,7 @@ namespace JambApp.Managers.Interfaces
 {
     public interface IAddressManager
     {
-        public void SaveAddress(Address address)
+        public void SaveAddress(Address address);
        
     }
 }

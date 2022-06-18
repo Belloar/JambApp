@@ -10,9 +10,9 @@ namespace JambApp
         string ConnectionString = "Server=localhost;Database=JambAppDatabase;Uid=root;Pwd=@belloAR2001;";
         static void Main(string[] args)
         {
-           
-            /* MainMenu menu = new MainMenu();
-             menu.Menu();*/
+
+            MainMenu menu = new MainMenu();
+            menu.Menu();
 
 
 

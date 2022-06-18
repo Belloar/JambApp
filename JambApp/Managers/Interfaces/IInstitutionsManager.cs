@@ -9,6 +9,6 @@ namespace JambApp.Managers.Interfaces
 {
     public interface IInstitutionsManager
     {
-        public void AddInstitution(Institutions institution, Address address);
+        public void AddInstitution(Institutions institution);
     }
 }

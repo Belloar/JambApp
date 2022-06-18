@@ -17,80 +17,189 @@ namespace JambApp.Managers
         SubjectManager subjectManager = new();
         //InstitutionsManager institutionsManager = new();
 
-
+        MySqlConnection connection = new MySqlConnection("Server=localhost;Database=JambAppDatabase;Uid=root;Pwd=@belloAR2001;");
         public List<Student> students;
         public const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-       /* public StudentManager()
+        
+        public void RegisterStudent(Student student)
         {
-            students = new()
-            {
-                new Student(1,"warri","man","warriman@gmail.com","0000",Gender.Male,"warriLand","00000",Role.Student,"0000aa",CentreManager.centres[2],DateTime.Now,0,"ogun","")
-            }
-        }*/
-        public void RegisterStudent()
-        {
-
-            NoOfStudents++;
-            Console.Write("Input your email address : ");
-            string email = Console.ReadLine();
+            connection.Open();
             
-            foreach(var astudent in students )
+
+            string commandString = $"insert into students(firstName,lastName,email,password,gender,nin,jambNumber,role)values('{student.FirstName}','{student.LastName}','{student.Email}','{student.Password}','{student.Gender}','{student.Nin}','{student.JambNumber}','{student.Role}');";
+
+            try
             {
-                if(astudent.Email == email)
+                MySqlCommand command = new MySqlCommand(commandString ,connection);
+                var result = command.ExecuteNonQuery();
+                Console.WriteLine("{0} rows affected ",result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+
+        }
+
+        public void Print(Student student)
+        {
+            Console.WriteLine($"{student.LastName}{student.FirstName}\n\t {student.Email}\n\t{student.Gender}\n\t{student.Address.HomeAddress}/ {student.Address.Town}/{student.Address.State}/{student.Address.Country}\n\t{student.Nin}\n{student.JambNumber}");
+        }
+
+        public void GetAllStudents()
+        {
+            string commandString = "select * from students;";
+
+            try
+            {
+
+                Student student = null;
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    Console.WriteLine("a Student with this email has already been added");
+                    student.FirstName = (string)reader["firstName"];
+                    student.LastName = (string)reader["Lastname"];
+                    student.Email = (string)reader["email"];
+                    student.JambNumber = (string)reader["jambnumber"];
+                    student.Gender = (Gender)reader["gender"];
+                    student.Id = (int)reader["id"];
+
+                    Console.WriteLine(student.FirstName);
+                    Console.WriteLine(student.LastName);
+                    Console.WriteLine(student.Email);
+                    Console.WriteLine(student.JambNumber);
+                    Console.WriteLine(student.Gender);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            //Console.WriteLine(reader.ToString()); ASK ALFA REGARDING THIS LINE
+
+        }
+        public Student GetStudentByJnum(string jambNumber)
+        {
+            Student student = null;
+            string commandString = $"select * from students where students.jambNumber = {jambNumber} inner join address on addressid = address.id";
+            try
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+
+                string firstName = (string)reader["firstName"];
+                string lastName = (string)reader["lastName"];
+                string email = (string)reader["email"];
+                string jjambNumber = (string)reader["jambNumber"];
+                string homeAddress = (string)reader["homeaddress"];
+                string town = (string)reader["homeAddress"];
+                string nin = (string)reader["nin"];
+                string city = (string)reader["city"];
+                string state = (string)reader["state"];
+                string country = (string)reader["country"];
+                Gender gender = (Gender)reader["gender"];
+
+                var address = new Address(homeAddress, town, city, state, country);
+                student = new Student(firstName, lastName, email, gender, address, nin, jjambNumber);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            return student;
+        }
+        public Student GetStudentByEmail(string email)
+        {
+            string commandString = $"select * from students left join address on student.addressid = address.id where students.email = {email}";
+            Student student = null;
+            try
+            {
+
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    student.FirstName = (string)reader["firstName"];
+                    student.LastName = (string)reader["lastname"];
+                    student.Email = (string)reader["email"];
+                    student.Gender = (Gender)reader["gender"];
+                    student.Role = (Role)reader["role"];
+                    student.Date = DateTime.Parse((string)reader["datee"]);
+                    student.Address.HomeAddress = (string)reader["homeAddress"];
+                    student.Address.City = (string)reader["city"];
+                    student.Address.State = (string)reader["state"];
+                    student.Address.ZipCode = (int)reader["zipcode"];
+                    student.Address.Country = (string)reader["country"];
+                    reader.Close();
                 }
             }
-            Console.Write("input your first name : ");
-            string firstName = Console.ReadLine();
-
-            Console.Write("Input your last name : ");
-            string lastName = Console.ReadLine();
-            Console.Write("Input a password : ");
-            string password = Console.ReadLine();
-
-            Console.Write("Confirm password");
-            string password1 = Console.ReadLine();
-
-            while(password != password1)
+            catch (Exception ex)
             {
-                Console.WriteLine(" \t invalid password please input password again");
-                password1 = Console.ReadLine();
+                Console.WriteLine(ex.Message);
             }
-
-            Console.Write("what is your gender\ninput 1 for male\n 2 for female \n 3 for rather not say");
-            int gender;
-            while(!int.TryParse(Console.ReadLine(),out gender ) && gender > 0 && gender < 4)
+            finally
             {
-                Console.WriteLine("invalid input enter 1,2,or 3 : ");
+                connection.Close();
             }
+            return student;
 
-            Console.Write("Input your home address : ");
-            string address = Console.ReadLine();
 
-            Console.Write("Input your state of residence : ");
-            string studentState = Console.ReadLine();
 
-            Console.Write("Input your NIN : ");
-            string nin = Console.ReadLine();
+        }
+        public void GetStudent(string email)
+        {
+            string commandString = $"select * from students left join address on student.addressid = address.id where students.email = {email}";
+            Student student = null;
+            try
+            {
 
-            Role role = Role.Student;
-            string jambNumber = JambNumberGenerator();
-            Centre examCentre = centreManager.GenerateExamCentre(studentState);
-
-            var date = DateTime.Now;
-
-            int examScore = 0;
-
-            Dictionary<string, Dictionary<string, string>> studentSubjects = new();
-            studentSubjects = subjectManager.CollectSubject();
-
-            List<Institutions> studentInstitutions = new();
-            studentInstitutions = institutionsManager.PickInstitution();
-
-            var student = new Student(NoOfStudents, firstName, lastName, email, password, (Gender)gender, address, nin, role, jambNumber, examCentre, date, examScore, studentState, studentSubjects, studentInstitutions);
-                students.Add(student);
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    student.FirstName = (string)reader["firstName"];
+                    student.LastName = (string)reader["lastname"];
+                    student.Email = (string)reader["email"];
+                    student.Gender = (Gender)reader["gender"];
+                    student.Role = (Role)reader["role"];
+                    student.Date = DateTime.Parse((string)reader["datee"]);
+                    student.Address.HomeAddress = (string)reader["homeAddress"];
+                    student.Address.City = (string)reader["city"];
+                    student.Address.State = (string)reader["state"];
+                    student.Address.ZipCode = (int)reader["zipcode"];
+                    student.Address.Country = (string)reader["country"];
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+            Print(student);
 
         }
         public string JambNumberGenerator()
@@ -100,53 +209,66 @@ namespace JambApp.Managers
 
             string jambNumber = string.Empty;
             string letters = string.Empty;
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
-               letters = stringBuilder.Append(chars[random.Next(chars.Length)]).ToString();
-               jambNumber = $"{random.Next(1000, 9999)}{random.Next(1000, 9999)}{letters}";
+                letters = stringBuilder.Append(chars[random.Next(chars.Length)]).ToString();
+                jambNumber = $"{random.Next(1000, 9999)}{random.Next(1000, 9999)}{letters}";
             }
             return jambNumber;
 
         }
-        public void Print(Student student)
+        public Student Login()
         {
-                Console.WriteLine($"{student.LastName}{student.FirstName}\n {student.Email}\n{student.Password}\n\t{student.Gender}\n\t{student.Address}\n\t{student.Nin}\n{student.Role}\n{student.JambNumber}\n{student.ExamCentre}\n{student.Date}\n{student.ExamScore}\n{student.StudentState}\n{student.StudentSubjects}\n{student.StudentInstitutions}");           
-        }
-        public void GetAllStudents()
-        {
-            foreach(var student in students)
+            connection.Open();
+            Console.Write("Enter your email: ");
+            var email = Console.ReadLine();
+            Console.Write("Enter your password: ");
+            var password = Console.ReadLine();
+
+            Student student = null;
+
+            string commandString = $"select * from students inner join address on students.id = studentid where email = '{email}' and password = '{password}'";
+            try
             {
-               Print(student);
+                MySqlCommand command = new MySqlCommand(commandString, connection);
+                var reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    string firstName = (string)reader["firstName"];
+                    string lastName = (string)reader["lastName"];
+                    string eemail = (string)reader["email"];
+                    string jjambNumber = (string)reader["jambNumber"];
+                    string homeAddress = "wer";//(string)reader["homeaddress"];
+                    string town =(string)reader["town"];
+                    string nin = (string)reader["nin"];
+                    string city = (string)reader["city"];
+                    string state = (string)reader["state"];
+                    string country = (string)reader["nationality"];
+                    Gender gender = (Gender)reader["gender"];
+                    var address = new Address(homeAddress, town, city, state, country);
+                    student = new Student(firstName, lastName, eemail, gender, address, nin, jjambNumber);
+                }
+                reader.Close();
             }
-        }
-        public void GetStudentByJnum(string jambNumber)
-        {
-            foreach(var student in students)
+            catch (Exception ex)
             {
-                if(student.JambNumber == jambNumber)
-                {
-                    Print(student);
-                }
-                else
-                {
-                    Console.WriteLine("A Student with this JambNumber does not exist");
-                }
+                Console.WriteLine(ex.Message);
             }
-        }
-        public void GetStudentByEmail(string email)
-        {
-            foreach (var student in students)
+            finally
             {
-                if (student.Email == email)
-                {
-                    Print(student);
-                }
-                else
-                {
-                    Console.WriteLine("A Student with this JambNumber does not exist");
-                }
+                connection.Close();
             }
+            
+            return student;
+           
+
         }
 
+        public void PrintBiodata(string jambNumber)
+        {
+            string connectionString = $"select * from student where jambNumber = {jambNumber}";
+            Console.WriteLine(connectionString);
+        }
+       
     }
 }
